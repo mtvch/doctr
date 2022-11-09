@@ -20,7 +20,7 @@ __all__ = ["IC13"]
 class IC13(AbstractDataset):
     """IC13 dataset from `"ICDAR 2013 Robust Reading Competition" <https://rrc.cvc.uab.es/>`_.
 
-    .. image:: https://github.com/mindee/doctr/releases/download/v0.5.0/ic13-grid.png
+    .. image:: https://doctr-static.mindee.com/models?id=v0.5.0/ic13-grid.png&src=0
         :align: center
 
     >>> # NOTE: You need to download both image and label parts from Focused Scene Text challenge Task2.1 2013-2015.
@@ -58,7 +58,7 @@ class IC13(AbstractDataset):
                 f"unable to locate {label_folder if not os.path.exists(label_folder) else img_folder}"
             )
 
-        self.data: List[Tuple[Union[Path, np.ndarray], Dict[str, Any]]] = []
+        self.data: List[Tuple[Union[Path, np.ndarray], Union[str, Dict[str, Any]]]] = []
         np_dtype = np.float32
 
         img_names = os.listdir(img_folder)
@@ -94,6 +94,6 @@ class IC13(AbstractDataset):
             if recognition_task:
                 crops = crop_bboxes_from_image(img_path=img_path, geoms=box_targets)
                 for crop, label in zip(crops, labels):
-                    self.data.append((crop, dict(labels=[label])))
+                    self.data.append((crop, label))
             else:
                 self.data.append((img_path, dict(boxes=box_targets, labels=labels)))

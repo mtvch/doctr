@@ -20,7 +20,7 @@ class SVT(VisionDataset):
     """SVT dataset from `"The Street View Text Dataset - UCSD Computer Vision"
     <http://vision.ucsd.edu/~kai/svt/>`_.
 
-    .. image:: https://github.com/mindee/doctr/releases/download/v0.5.0/svt-grid.png
+    .. image:: https://doctr-static.mindee.com/models?id=v0.5.0/svt-grid.png&src=0
         :align: center
 
     >>> from doctr.datasets import SVT
@@ -54,7 +54,7 @@ class SVT(VisionDataset):
             **kwargs,
         )
         self.train = train
-        self.data: List[Tuple[Union[str, np.ndarray], Dict[str, Any]]] = []
+        self.data: List[Tuple[Union[str, np.ndarray], Union[str, Dict[str, Any]]]] = []
         np_dtype = np.float32
 
         # Load xml data
@@ -107,7 +107,7 @@ class SVT(VisionDataset):
                 crops = crop_bboxes_from_image(img_path=os.path.join(tmp_root, name.text), geoms=boxes)
                 for crop, label in zip(crops, labels):
                     if crop.shape[0] > 0 and crop.shape[1] > 0 and len(label) > 0:
-                        self.data.append((crop, dict(labels=[label])))
+                        self.data.append((crop, label))
             else:
                 self.data.append((name.text, dict(boxes=boxes, labels=labels)))
 

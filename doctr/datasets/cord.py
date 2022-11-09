@@ -21,7 +21,7 @@ class CORD(VisionDataset):
     """CORD dataset from `"CORD: A Consolidated Receipt Dataset forPost-OCR Parsing"
     <https://openreview.net/pdf?id=SJl3z659UH>`_.
 
-    .. image:: https://github.com/mindee/doctr/releases/download/v0.5.0/cord-grid.png
+    .. image:: https://doctr-static.mindee.com/models?id=v0.5.0/cord-grid.png&src=0
         :align: center
 
     >>> from doctr.datasets import CORD
@@ -36,12 +36,12 @@ class CORD(VisionDataset):
     """
 
     TRAIN = (
-        "https://github.com/mindee/doctr/releases/download/v0.1.1/cord_train.zip",
+        "https://doctr-static.mindee.com/models?id=v0.1.1/cord_train.zip&src=0",
         "45f9dc77f126490f3e52d7cb4f70ef3c57e649ea86d19d862a2757c9c455d7f8",
     )
 
     TEST = (
-        "https://github.com/mindee/doctr/releases/download/v0.1.1/cord_test.zip",
+        "https://doctr-static.mindee.com/models?id=v0.1.1/cord_test.zip&src=0",
         "8c895e3d6f7e1161c5b7245e3723ce15c04d84be89eaa6093949b75a66fb3c58",
     )
 
@@ -65,7 +65,7 @@ class CORD(VisionDataset):
 
         # List images
         tmp_root = os.path.join(self.root, "image")
-        self.data: List[Tuple[Union[str, np.ndarray], Dict[str, Any]]] = []
+        self.data: List[Tuple[Union[str, np.ndarray], Union[str, Dict[str, Any]]]] = []
         self.train = train
         np_dtype = np.float32
         for img_path in tqdm(iterable=os.listdir(tmp_root), desc="Unpacking CORD", total=len(os.listdir(tmp_root))):
@@ -106,7 +106,7 @@ class CORD(VisionDataset):
                     img_path=os.path.join(tmp_root, img_path), geoms=np.asarray(box_targets, dtype=int).clip(min=0)
                 )
                 for crop, label in zip(crops, list(text_targets)):
-                    self.data.append((crop, dict(labels=[label])))
+                    self.data.append((crop, label))
             else:
                 self.data.append(
                     (img_path, dict(boxes=np.asarray(box_targets, dtype=int).clip(min=0), labels=list(text_targets)))
